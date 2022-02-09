@@ -1,0 +1,66 @@
+SQL 기초
+1. SELECT
+문제1: 모든 도서의 이름과 가격을 검색하시오.
+SELECT bookname, price
+FROM Book;
+
+문제2: 도서 테이블에 있는 모든 출판사를 검색하시오.(중복제거)
+SELECT DISTINCT publisher
+FROM Book;
+
+2. WHERE_조건검색
+1) 비교 : =, >, <, <=, >=
+2) 범위 : BETWEEN
+3) 집합 : IN, NOT IN
+4) 패턴 : LIKE
+5) NULL : IS NULL, IS NOT NULL 
+(가끔식 투플값이 비어있는데 NULL조건으로 안나오면 = ‘ ‘ 으로 찾아보기)
+
+6) 복합조건 : AND, OR, NOT
+
+문제1: 출판사가 ‘굿스포츠’ 혹은 ‘대한미디어’인 도서를 검색하시오.
+SELECT *
+FROM Book
+WHERE publisher IN (‘굿스포츠’ , ‘대한미디어’);
+
+
+3. 검색 결과의 정렬
+문제1: 도서를 이름순으로 검색하시오.
+SELECT * 
+FROM Book
+ORDER BY bookname;
+
+문제2: 도서를 가격순으로 검색하고, 가격이 같으면 이름순으로 검색하시오.
+SELECT  * 
+FROM Book
+ORDER BY price, bookname;
+
+문제3: 도서를 가격의 내림차순으로 검색하시오. 만약 가격이 같다면 출판사의 오름차순으로 출력하시오.
+SELECT *
+FROM Book
+ORDER BY price desc, publisher asc;
+
+4. 집계함수와 GROUP BY 검색
+1) 집계 함수 : AVG, MIN, MAX, COUNT
+문제1: 고객이 주문한 도서의 총판매액을 구하시오. (별칭)
+SELECT SUM(saleprice) AS 총매출
+FROM Orders;
+
+
+
+
+문제2: 김연아 고객이 주문한 도서의 총판매액을 구하시오.
+SELECT SUM(saleprice) AS 총판매액
+FROM Orders
+WHERE custid = 2;
+
+문제3: 마당서점의 도서 판매 건수를 구하시오.
+SELECT COUNT(*)
+FROM Orders;
+
+문제4: 가격 8000원 이상인 도서를 구매한 고객에 대해여 고객별 주문 도서의 총수량을 구하시오. 단, 2권 이상 구매한 고객만 구하시오.
+SELECT custid, COUNT(*) AS 도서수량
+FROM Orders
+WHERE saleprice >= 8000
+GROUP BY custid
+HAVING BY COUNT(*) > 2;
